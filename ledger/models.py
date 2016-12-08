@@ -4,6 +4,13 @@ from django.db import models
 
 class Friend(models.Model):
     nick = models.CharField(max_length=20)
+    def currentBalance(self):
+        total = 0
+        for entry in self.entry_set:
+          total += entry.my_added_debt
+          uov = entry.unit_of_value
+        # FIXME: deal with converting multiple uov
+        return str(total) + ' ' + uov
     def __str__(self):
         return '(' + self.nick + ')'
 

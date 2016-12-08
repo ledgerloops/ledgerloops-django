@@ -1,10 +1,9 @@
 <h1>Friends</h1>
 <ul>
-{% for friend in a %}
+{% for friend in object_list %}
     <li>
          <a href="{% url 'ledger:friend' friend.id %}">{{ friend.nick }}</a>:
-         {{ friend.current_balance.amount }}
-         {{ friend.current_balance.unit_of_value }}
+         {{ friend.current_balance }}
     </li>
 {% empty %}
     <li>No friends yet.</li>

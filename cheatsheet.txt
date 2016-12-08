@@ -1,0 +1,21 @@
+django-admin startproject ledgerloops-django
+cd ledgerloops-django
+git init
+python manage.py startapp ledger
+python manage.py makemigrations ledger
+python manage.py migrate
+python manage.py runserver
+vim ledger/urls.py
+vim ledger/views.py
+vim ledger/models.py
+vim ledger/templates/ledger/friend_detail.html
+python manage.py shell
+>>> Friend.objects.all()
+>>> reduce(lambda x,y: x+y, map(lambda x: x.my_added_debt, Friend.objects.all()[0].entry_set.all()))
+vim ledger/admin.py -> admin.site.register(Friend)
+python manage.py createsuperuser
+
+    def get_context_data(self, **kwargs):
+        context = super(IndexView, self).get_context_data(**kwargs)
+        context['foo'] = 'bar'
+        return context
