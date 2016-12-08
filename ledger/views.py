@@ -4,15 +4,17 @@ from django.http import HttpResponse
 
 from .models import Friend,Entry
 
-class FriendList(generic.ListView):
-    model = Friend
+def friend_list(request):
+    friends = Friend.objects.all()
+    # Calculate balances:
+    for friend in friends:
+        friend.balance = friend.currentBalance()
+    return render(request, 'ledger/friend_list.html', {
+        'object_list': friends,
+    })
     
 class FriendDetail(generic.DetailView):
     model = Friend
-    def get_object(self):
-        friend = super(FriendDetail, self).get_object()
-        context['current_balance'] = self.friend.currentBalance()
-        return context
 
 def add(request, pk):
     return HttpResponse('yes')

@@ -6,7 +6,7 @@ class Friend(models.Model):
     nick = models.CharField(max_length=20)
     def currentBalance(self):
         total = 0
-        for entry in self.entry_set:
+        for entry in self.entry_set.all():
           total += entry.my_added_debt
           uov = entry.unit_of_value
         # FIXME: deal with converting multiple uov
