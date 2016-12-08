@@ -5,13 +5,13 @@ You're looking at the ledger for friend {{ friend.nick }}.
 
 <p>
 Current balance:
-    {{ balance.amount }}
-    {{ balance.unit_of_value }}
+    {{ friend.current_balance.amount }}
+    {{ friend.current_balance.unit_of_value }}
 </p>
 
 <p>
 Last entry:
-    {{ entry.description }}
-    {{ entry.amount }}
-    {{ entry.unit_of_value }}
+    {{ friend.current_balance.last_entry.description }}
+    {{ friend.current_balance.last_entry.amount }}
+    {{ friend.current_balance.last_entry.unit_of_value }}
 </p>

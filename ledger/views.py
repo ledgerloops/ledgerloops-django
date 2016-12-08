@@ -1,26 +1,15 @@
 from django.shortcuts import render,get_object_or_404
+from django.urls import reverse
+from django.views import generic
 
 from .models import Entry,Balance,Friend
 
-def friendEntry(f):
-    b = f.current_balance
-    return '<a href="./'+f.nick+'">'+f.nick+'</a>:' + str(b.amount) + ' ' \
-        + b.unit_of_value
+class IndexView(generic.ListView):
+    template_name = 'ledger/index.html'
+    context_object_name = 'friend_list'
+    def get_queryset(self):
+        return Friend.objects.all()
 
-def ledgerEntry(e):
-    return ' '.join([e.description, str(e.amount), e.unit_of_value])
-
-def index(request):
-    return render(request, 'ledger/index.html', {
-      'friend_list': Friend.objects.all(),
-    })
-
-def friend(request, friend_id):
-    friend = get_object_or_404(Friend, nick=friend_id)
-    balance = friend.current_balance
-    entry = balance.last_entry
-    return render(request, 'ledger/friend.html', {
-        'friend': friend,
-        'balance': balance,
-        'entry': entry,
-    })
+class FriendView(generic.DetailView):
+    model = Friend
+    template_name = 'ledger/friend.html'

@@ -2,7 +2,7 @@
     <ul>
     {% for friend in friend_list %}
         <li>
-             <a href="{% url 'ledger:friend' friend.nick %}">{{ friend.nick }}</a>:
+             <a href="{% url 'ledger:friend' friend.id %}">{{ friend.nick }}</a>:
              {{ friend.current_balance.amount }}
              {{ friend.current_balance.unit_of_value }}
         </li>
