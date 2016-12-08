@@ -3,6 +3,8 @@ You're looking at the ledger for friend {{ friend.nick }}.
     (<a href="{% url 'ledger:index' %}">back</a>)
 </p>
 
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
 <p>
 Current balance:
     {{ friend.current_balance.amount }}
@@ -15,3 +17,17 @@ Last entry:
     {{ friend.current_balance.last_entry.amount }}
     {{ friend.current_balance.last_entry.unit_of_value }}
 </p>
+
+<form action="{% url 'ledger:add' friend.id %}" method="post">
+{% csrf_token %}
+
+<label for="amount">Amount</label>
+<input type="text" name="amount" id="amount" value="0" />
+<br>
+
+<label for="unit_of_value">Unit of Value</label>
+<input type="text" name="unit_of_value" id="unit_of_value" value="0" />
+<br>
+
+<input type="submit" value="Add" />
+</form>
