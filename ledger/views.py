@@ -1,25 +1,26 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render,get_object_or_404
+
 from .models import Entry,Balance,Friend
 
 def friendEntry(f):
     b = f.current_balance
-    balance = str(b.amount) + ' ' + b.unit_of_value
-    return '<a href="./'+f.nick+'">'+f.nick+'</a>:'+balance
+    return '<a href="./'+f.nick+'">'+f.nick+'</a>:' + str(b.amount) + ' ' \
+        + b.unit_of_value
 
 def ledgerEntry(e):
     return ' '.join([e.description, str(e.amount), e.unit_of_value])
 
 def index(request):
-    friends = Friend.objects.all()
-    output = ', '.join([friendEntry(f) for f in friends])
-    return HttpResponse(output)
+    return render(request, 'ledger/index.html', {
+      'friend_list': Friend.objects.all(),
+    })
 
 def friend(request, friend_id):
-    f = Friend.objects.get(nick=friend_id)
-    e = f.current_balance.last_entry
-    return HttpResponse('<br>'.join([ \
-        'You\'re looking at the ledger for friend %s.' % friend_id \
-            + '(<a href="../">back</a>)', \
-        friendEntry(f), \
-        'Last entry:' + ledgerEntry(e) ]))
+    friend = get_object_or_404(Friend, nick=friend_id)
+    balance = friend.current_balance
+    entry = balance.last_entry
+    return render(request, 'ledger/friend.html', {
+        'friend': friend,
+        'balance': balance,
+        'entry': entry,
+    })

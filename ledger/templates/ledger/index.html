@@ -1,0 +1,13 @@
+{% if friend_list %}
+    <ul>
+    {% for friend in friend_list %}
+        <li>
+             <a href="{% url 'friend' friend.nick %}">{{ friend.nick }}</a>:
+             {{ friend.current_balance.amount }}
+             {{ friend.current_balance.unit_of_value }}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>You have no friends.</p>
+{% endif %}

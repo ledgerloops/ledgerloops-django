@@ -1,0 +1,17 @@
+<p>
+You're looking at the ledger for friend {{ friend.nick }}.
+    (<a href="{% url 'index' %}">back</a>)
+</p>
+
+<p>
+Current balance:
+    {{ balance.amount }}
+    {{ balance.unit_of_value }}
+</p>
+
+<p>
+Last entry:
+    {{ entry.description }}
+    {{ entry.amount }}
+    {{ entry.unit_of_value }}
+</p>
