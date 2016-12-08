@@ -2,6 +2,7 @@ from django.conf.urls import url
 
 from . import views
 
+app_name = 'ledger'
 urlpatterns = [
     # ex: /ledger/
     url(r'^$', views.index, name='index'),
