@@ -1,0 +1,12 @@
+<h1>Friends</h1>
+<ul>
+{% for friend in a %}
+    <li>
+         <a href="{% url 'ledger:friend' friend.id %}">{{ friend.nick }}</a>:
+         {{ friend.current_balance.amount }}
+         {{ friend.current_balance.unit_of_value }}
+    </li>
+{% empty %}
+    <li>No friends yet.</li>
+{% endfor %}
+</ul>

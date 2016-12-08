@@ -7,7 +7,7 @@ urlpatterns = [
     # ex: /ledger/
     url(r'^$', views.IndexView.as_view(), name='index'),
     # ex: /ledger/1/
-    url(r'^(?P<pk>[0-9]+)/$', views.FriendView.as_view(), name='friend'),
+    url(r'^(?P<pk>[0-9]+)/$', views.friend, name='friend'),
     # ex: /ledger/1/add
-    url(r'^(?P<pk>[0-9]+)/add$', views.AddView.as_view(), name='add'),
+    url(r'^(?P<pk>[0-9]+)/add$', views.add, name='add'),
 ]
