@@ -1,40 +1,16 @@
-<p>
-You're looking at the ledger for friend {{ friend.nick }}.
-    (<a href="{% url 'ledger:index' %}">back</a>)
-</p>
-
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-
-<p>
-Current balance:
-    {{ current_balance.amount }}
-    {{ current_balance.unit_of_value }}
-</p>
-
-<p>
-Entries:
-<ul>
+<h1>Entries</h1>
+<table border="1">
+<tr><td>Date</td><td>Description</td><td>Previous hash</td><td>This hash</td><td>My new debt</td><td>Unit of value</td></tr>
 {% for entry in object_list %}
-    <li>
-    {{ entry.description }}
-    {{ entry.my_added_debt }}
-    {{ entry.unit_of_value }}
-    </li>
+    <tr>
+         <td>{{ entry.date }}</td>
+         <td>{{ entry.description }}</td>
+         <td>{{ entry.previous_hash }}</td>
+         <td>{{ entry.this_hash }}</td>
+         <td>{{ entry.my_new_debt }}</td>
+         <td>{{ entry.unit_of_value }}</td>
+    </tr>
 {% empty %}
-    <li>(no entries)</li>
+    No entrys yet.
 {% endfor %}
-</ul>
-
-<form action="{% url 'ledger:add' friend.id %}" method="post">
-{% csrf_token %}
-
-<label for="amount">Amount</label>
-<input type="text" name="amount" id="amount" value="0" />
-<br>
-
-<label for="unit_of_value">Unit of Value</label>
-<input type="text" name="unit_of_value" id="unit_of_value" value="IDR" />
-<br>
-
-<input type="submit" value="Add" />
-</form>
+</table>

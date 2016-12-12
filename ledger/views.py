@@ -13,6 +13,14 @@ def friend_list(request):
         'object_list': friends,
     })
     
+def entry_list(request, pk):
+    entries = Entry.objects.filter(friend=pk)
+    for entry in entries:
+        entry.this_hash = entry.calcHash()
+    return render(request, 'ledger/entry_list.html', {
+        'object_list': entries,
+    })
+    
 class FriendDetail(generic.DetailView):
     model = Friend
 
