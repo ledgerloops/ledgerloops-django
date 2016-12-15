@@ -1,6 +1,14 @@
-django-admin startproject ledgerloops-django
 cd ledgerloops-django
 git init
+sudo apt-get install python3-pip
+pip install virtualenvwrapper
+export WORKON_HOME=~/Envs
+mkdir -p $WORKON_HOME
+source /usr/local/bin/virtualenvwrapper.sh
+mkvirtualenv env1
+(env1)$ pip install django
+
+django-admin startproject ledgerloops-django
 python manage.py startapp ledger
 python manage.py makemigrations ledger
 python manage.py migrate
@@ -19,3 +27,12 @@ python manage.py createsuperuser
         context = super(IndexView, self).get_context_data(**kwargs)
         context['foo'] = 'bar'
         return context
+
+>>> [ n*n for n in range(5) ] # regular list comprehension
+[0, 1, 4, 9, 16]
+>>>
+>>> { n*n for n in range(5) } # set comprehension
+{0, 1, 4, 9, 16}
+>>>
+>>> { n: n*n for n in range(5) } # dict comprehension
+{0: 0, 1: 1, 2: 4, 3: 9, 4: 16}

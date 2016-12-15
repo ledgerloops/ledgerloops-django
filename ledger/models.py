@@ -30,7 +30,7 @@ class Entry(models.Model):
             "unit_of_value": self.unit_of_value,
             "timestamp": timestamp,
         })
-        return sha256(stringified).hexdigest()
+        return sha256(stringified.encode('utf-8')).hexdigest()
     def __str__(self):
         return '(' + self.friend.nick + ')' \
             + self.description \
