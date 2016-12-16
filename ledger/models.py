@@ -31,6 +31,7 @@ class Entry(models.Model):
             "timestamp": timestamp,
         })
         return sha256(stringified.encode('utf-8')).hexdigest()
+        # return stringified.encode('utf-8')
     def __str__(self):
         return '(' + self.friend.nick + ')' \
             + self.description \

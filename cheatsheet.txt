@@ -6,6 +6,7 @@ export WORKON_HOME=~/Envs
 mkdir -p $WORKON_HOME
 source /usr/local/bin/virtualenvwrapper.sh
 mkvirtualenv env1
+workon env1
 (env1)$ pip install django
 
 django-admin startproject ledgerloops-django

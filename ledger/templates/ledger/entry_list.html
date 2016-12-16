@@ -14,3 +14,9 @@
     No entrys yet.
 {% endfor %}
 </table>
+<form action="{% url 'ledger:add' 1 %}" method="post">
+{% csrf_token %}
+<input name="my_added_debt" id="my_added_debt" value="10" />
+<input name="unit_of_value" id="unit_of_value" value="IDR" />
+<input type="submit" value="Add" />
+</form>

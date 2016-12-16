@@ -1,6 +1,7 @@
 from django.views import generic
-from django.shortcuts import get_object_or_404,render
-from django.http import HttpResponse
+from django.shortcuts import get_object_or_404,render,reverse
+from django.http import HttpResponse,HttpResponseRedirect
+from datetime import datetime
 
 from .models import Friend,Entry
 
@@ -25,4 +26,21 @@ class FriendDetail(generic.DetailView):
     model = Friend
 
 def add(request, pk):
-    return HttpResponse('yes')
+    friend = get_object_or_404(Friend, pk = pk)
+    last_entry = friend.entry_set.order_by('-date')[0]
+    # request.POST['added_debt']
+    if (request.POST['unit_of_value'] == last_entry.unit_of_value):
+        new_entry = Entry.objects.create( \
+            date = datetime.now(), \
+            friend_id = friend.id,
+            previous_hash = last_entry.calcHash(), \
+            my_new_debt = last_entry.my_new_debt \
+                + float(request.POST['my_added_debt']), \
+            description = 'added through django app', \
+            unit_of_value = last_entry.unit_of_value, \
+            )
+        new_entry.save()
+        # return HttpResponseRedirect(reverse('entry_list', args=(pk,)))
+        return HttpResponseRedirect('/ledger/1/')
+    else:
+        return HttpResponse('no' + pk + last_entry.unit_of_value)
