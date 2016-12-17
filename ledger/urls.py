@@ -10,4 +10,6 @@ urlpatterns = [
     url(r'^(?P<pk>[0-9]+)/$', views.entry_list, name='friend'),
     # ex: /ledger/1/add
     url(r'^(?P<pk>[0-9]+)/add$', views.add, name='add'),
+    # ex: /ledger/webhook
+    url(r'^webhook$', views.webhook, name='webhook'),
 ]

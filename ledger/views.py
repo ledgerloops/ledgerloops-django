@@ -2,6 +2,8 @@ from django.views import generic
 from django.shortcuts import get_object_or_404,render,reverse
 from django.http import HttpResponse,HttpResponseRedirect
 from datetime import datetime
+from pytz import utc
+from django.views.decorators.csrf import csrf_exempt
 import requests
 
 from .models import Friend,Entry
@@ -27,7 +29,8 @@ class FriendDetail(generic.DetailView):
     model = Friend
 
 def inform_friend(friend, entry):
-    r = requests.post(friend.contact_url, { \
+    r = requests.post(friend.contact_url, data = { \
+        'secret': friend.secret, \
         'this_hash': entry.calcHash(), \
         'previous_hash': entry.previous_hash, \
         'timestamp': entry.getTimestamp(), \
@@ -37,10 +40,12 @@ def inform_friend(friend, entry):
         })
     return True
 
-def webhook(request, pk):
+@csrf_exempt
+def webhook(request):
+    friend = get_object_or_404(Friend, secret=request.POST['secret'])
     new_entry = Entry.objects.create( \
-        date = datetime.fromtimestamp(request.POST['timestamp']), \
-        friend_id = pk,
+        date = datetime.fromtimestamp(float(request.POST['timestamp']), utc), \
+        friend_id = friend.id,
         previous_hash = request.POST['previous_hash'], \
         # notice minus sign:
         my_new_debt = -float(request.POST['my_new_debt']), \
@@ -48,6 +53,7 @@ def webhook(request, pk):
         unit_of_value = request.POST['unit_of_value'], \
         )
     new_entry.save()
+    return HttpResponse('yes')
 
 def add(request, pk):
     friend = get_object_or_404(Friend, pk = pk)
