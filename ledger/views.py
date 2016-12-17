@@ -2,6 +2,7 @@ from django.views import generic
 from django.shortcuts import get_object_or_404,render,reverse
 from django.http import HttpResponse,HttpResponseRedirect
 from datetime import datetime
+import requests
 
 from .models import Friend,Entry
 
@@ -25,6 +26,29 @@ def entry_list(request, pk):
 class FriendDetail(generic.DetailView):
     model = Friend
 
+def inform_friend(friend, entry):
+    r = requests.post(friend.contact_url, { \
+        'this_hash': entry.calcHash(), \
+        'previous_hash': entry.previous_hash, \
+        'timestamp': entry.getTimestamp(), \
+        'my_new_debt': entry.my_new_debt, \
+        'unit_of_value': entry.unit_of_value, \
+        'description': entry.description, \
+        })
+    return True
+
+def webhook(request, pk):
+    new_entry = Entry.objects.create( \
+        date = datetime.fromtimestamp(request.POST['timestamp']), \
+        friend_id = pk,
+        previous_hash = request.POST['previous_hash'], \
+        # notice minus sign:
+        my_new_debt = -float(request.POST['my_new_debt']), \
+        description = request.POST['description'], \
+        unit_of_value = request.POST['unit_of_value'], \
+        )
+    new_entry.save()
+
 def add(request, pk):
     friend = get_object_or_404(Friend, pk = pk)
     last_entry = friend.entry_set.order_by('-date')[0]
@@ -40,6 +64,7 @@ def add(request, pk):
             unit_of_value = last_entry.unit_of_value, \
             )
         new_entry.save()
+        inform_friend(friend, new_entry)
         # return HttpResponseRedirect(reverse('entry_list', args=(pk,)))
         return HttpResponseRedirect('/ledger/1/')
     else:

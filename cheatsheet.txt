@@ -14,6 +14,8 @@ python manage.py startapp ledger
 python manage.py makemigrations ledger
 python manage.py migrate
 python manage.py runserver
+python manage.py createsuperuser
+
 vim ledger/urls.py
 vim ledger/views.py
 vim ledger/models.py
@@ -37,3 +39,11 @@ python manage.py createsuperuser
 >>>
 >>> { n: n*n for n in range(5) } # dict comprehension
 {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+django limitations:
+* actions have to start with a user click
+* the page does not update until after a roundtrip
+better arch:
+* user actions affect a local copy of the data
+* two-way async sync
+but for that you need client-side rendering and decide what data should be in IDB.
